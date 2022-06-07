@@ -31,6 +31,7 @@ class Breadcrumbs extends ResourceCard {
     public $height = "dynamic";
     public $resource;
     public array $extraClasses = [];
+    public $withRelationships = true;
 
     public function __construct(NovaRequest $request, Resource $resource = null) {
         $this->resource = $resource;
@@ -54,6 +55,11 @@ class Breadcrumbs extends ResourceCard {
 
     public function withClasses($classes) {
         $this->extraClasses = array_merge($this->extraClasses, Arr::wrap($classes));
+        return $this;
+    }
+
+    public function withoutRelationships($withoutRelationships = true) {
+        $this->withRelationships = !$withoutRelationships;
         return $this;
     }
 
@@ -131,7 +137,9 @@ class Breadcrumbs extends ResourceCard {
                 ];
             }
             $array[] = $indexCrumb;
-            $this->getRelationshipTree($this->getParentModel($model), $array);
+            if ($this->withRelationships) {
+                $this->getRelationshipTree($this->getParentModel($model), $array);
+            }
         }
     }
 
@@ -273,7 +281,6 @@ class Breadcrumbs extends ResourceCard {
             } catch (\Throwable $e) {
             }
         }
-
         return $relationships;
     }
 
