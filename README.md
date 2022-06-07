@@ -106,13 +106,18 @@ Please see the included config file for a full list of configuration options (it
 
 In addition to these options you can also specify the following options in the resource itself:
 
-#### Link To parent
+#### Link To Parent
 This determines if the breadcrumb should link to the parent resource regardless of if the current resource's index is navigable from the main menu:
 `public static $linkToParent = true|false;`
 
 #### Extra CSS Classes
 These can be configured globally or chained to the Breadcrumbs class:
 `Breadcrumbs::make($request, $this)->withClasses(["my-extra", "classes"])`
+
+#### Without Relationships
+Relationships in breadcrumbs can be ommited. 'Home' will be the Resource's parent element.
+These can be configured globally or chained to the Breadcrumbs class:
+`Breadcrumbs::make($request, $this)->withoutRelationships()`
 
 #### Visibility and Authorisations
 Please see the [formfeed-uk/nova-resource-cards](https://github.com/Formfeed-UK/nova-resource-cards) package for information on the visbility and authorisation methods. They broadly follow the same pattern as fields.
