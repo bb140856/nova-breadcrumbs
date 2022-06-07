@@ -31,6 +31,7 @@ class Breadcrumbs extends ResourceCard {
     public $height = "dynamic";
     public $resource;
     public array $extraClasses = [];
+    public array $customTree = [];
 
     public function __construct(NovaRequest $request, Resource $resource = null) {
         $this->resource = $resource;
@@ -57,6 +58,11 @@ class Breadcrumbs extends ResourceCard {
         return $this;
     }
 
+    public function withCustomTree($customTree) {
+        $this->customTree = $customTree;
+        return $this;
+    }
+
     protected function breadcrumbArray() {
         $primaryKey = $this->resource->model()->getKeyName();
         $currentModel = null;
@@ -78,8 +84,11 @@ class Breadcrumbs extends ResourceCard {
         $array = [];
 
         $this->getRelationshipTree($currentModel, $array);
+
         $array[] = ['url' => config("nova.path", "/nova"), 'displayType' => 'home', 'label' => __("Home")];
+
         $array = array_reverse($array);
+
         if (($display = $this->request->query("display")) && in_array($this->request->query("display"), ["create", "update", "attach", "replicate"])) {
             $array[] = ['displayType' => 'span', 'label' => __(ucfirst($display))];
         }
@@ -131,6 +140,7 @@ class Breadcrumbs extends ResourceCard {
                 ];
             }
             $array[] = $indexCrumb;
+
             $this->getRelationshipTree($this->getParentModel($model), $array);
         }
     }
